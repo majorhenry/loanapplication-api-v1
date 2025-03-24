@@ -18,7 +18,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: "@Ashiru58"
         ports:
-          - 6543:6543
+          - 5432:6543
         options: >-
           --health-cmd "pg_isready -U postgres" 
           --health-interval 10s 
