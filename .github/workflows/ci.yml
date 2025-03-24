@@ -50,7 +50,7 @@ jobs:
             set -a
             source .env
             set +a
-            echo "DB is $DB_NAME"
+            echo "DB is loanappdb"
         
       - name: Run tests
         run: yarn test
