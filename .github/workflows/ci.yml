@@ -44,15 +44,7 @@ jobs:
             echo "Waiting for postgres..."
             sleep 2
           done
-
-    #   - name: Run DB migrations or setup schema
-    #     run: |
-    #         set -a
-    #         source .env
-    #         set +a
-    #         echo "DB is loanappdb"
-        
+ 
       - name: Run tests
         run: yarn test
         
-        # PGPASSWORD=postgres psql -h localhost  -U postgres -d loanappdb -f db/schema.sql
