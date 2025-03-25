@@ -26,14 +26,14 @@ The schema is located in the db directory, and every action taken have been comm
 ```
 # Explanation of security and CI/CD decisions.
 ```
-Security decision inthe CI/CD is to ensure that sensitive informations where all passed through github actions secrets.
+Security decision in the CI/CD is to ensure that sensitive informations where all passed through github actions secrets.
 ```
 
 # A short Write-up
 ```
 In this project, I used AI (chatgpt) extensivly as a search engine for debugging, summarizing library documentation and generating basic template before advancing the project, to be more profesional and easy to maintain.
 
-To avoid a situation where this project works well on my machine but fails in production, I decided to use docker to ensure consistence throught out the project. I also used .env file to store sensitive and passed then securely passed the values when needed.
+To avoid a situation where this project works well on my machine but fails in production, I decided to use docker to ensure consistency throught out the project. I also used .env file to store sensitive informations and are passed securely when needed.
 ```
 
 # ✅ Infrastructure & AWS Deployment
