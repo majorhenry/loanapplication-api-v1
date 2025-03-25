@@ -20,9 +20,9 @@
 
 `docker compose logs`
 
-# Schea definition and explanation.
+# Schema definition and explanation.
 ```
-The schema is located in the db directory, and every action taken have been commmented for easy readabity. To ensure that no negative value can be sent by customer columns ensure that values are greater than zero and query are parameterized. Furthermore after using I always used client.release(); to ensure no data leaks.
+The schema is located in the db directory, and every action taken have been commmented for easy readabity. To ensure that no negative value can be sent by customers to columns, I ensured that values are greater than zero and query are parameterized. Furthermore after using the querying the database with pool method, I always used client.release(); to ensure no data leaks.
 ```
 # Explanation of security and CI/CD decisions.
 ```
