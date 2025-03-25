@@ -46,7 +46,7 @@ To avoid a situation where this project works well on my machine but fails in pr
 
 | Component	        |    Value
 |-------------------|-----------------------------------
-| Platform	        |    Node.js (choose version used by app)
+| Platform	        |    Node.js (choose version used by app) for this project Docker
 | Environment Type	| Web server environment
 | Instance Type	    |    t2.micro or t3.micro (free tier eligible)
 | Load Balancer	    |   Optional (for single instance apps)
