@@ -8,7 +8,10 @@
     n = Number of months (loan term)
 */
 
+const { parse } = require("dotenv");
+
 const calculateMonthlyRepayment = (principal, annualInterestRate, termMonths) => {
+    if (annualInterestRate === 0) return parseFloat((principal / termMonths).toFixed(2));
     // Convert annual interest rate to monthly interest rate
     const monthlyInterestRate = annualInterestRate / 12 / 100;
 
@@ -18,7 +21,9 @@ const calculateMonthlyRepayment = (principal, annualInterestRate, termMonths) =>
         (Math.pow(1 + monthlyInterestRate, termMonths) - 1);
 
     // Return the monthly repayment amount to 2 decimal places
-    return parseFloat(monthlyRepayment.toFixed(2));
+    const result = parseFloat(monthlyRepayment.toFixed(2))
+    const roundedResult = Math.round( result * 100) / 100;
+    return roundedResult;
 };
 
 module.exports = { calculateMonthlyRepayment };

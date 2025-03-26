@@ -63,4 +63,5 @@ const startServer = async () => {
     process.exit(1); // exit the process if the connection fails after retries
   }
 }   
+module.exports = app;
 startServer();
