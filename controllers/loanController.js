@@ -80,7 +80,7 @@ const getLoanApplicationById = async (req, res, next) => {
       `;
       
       const result = await pool.query(query, [id]);
-      
+      result = result?.rows[0] || [];
       if (!result.rows || result.rows.length === 0) {
         return res.status(404).json({
           success: false,
