@@ -16,8 +16,20 @@
     "pg": "^8.14.1"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "echo \"Tests go Here!\" "
+    "start": "node startServer.js",
+    "dev": "nodemon startServer.js",
+    "test": "jest --coverage"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/config/"
+    ]
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "node-mocks-http": "^1.16.2",
+    "supertest": "^7.1.0"
   }
 }
