@@ -14,6 +14,11 @@ const  createLoanApplication = async (req, res, next) => {
         if (!customer_id || !amount || !term_months || !annual_interest_rate) {
           return res.status(400).json({ error: 'Missing required fields' });
         }
+        if (amount <= 0 || term_months <= 0 || annual_interest_rate <= 0) {
+          return res.status(400).json({
+            errors: ["Invalid input: amount, term_months, or annual_interest_rate must be greater than zero"]
+          });
+        }
 
         // Calculate the monthly repayment amount
         const monthly_repayment = calculateMonthlyRepayment(amount, annual_interest_rate, term_months);
@@ -45,6 +50,7 @@ const  createLoanApplication = async (req, res, next) => {
     });
     } catch (error) {
         await client.query('ROLLBACK');
+        res.status(500).json({ success: false, message: "An unexpected error occurred." });
         next(error);
     } finally {
         client.release();
@@ -75,7 +81,7 @@ const getLoanApplicationById = async (req, res, next) => {
       
       const result = await pool.query(query, [id]);
       
-      if (result.rows.length === 0) {
+      if (!result.rows || result.rows.length === 0) {
         return res.status(404).json({
           success: false,
           message: 'Loan application not found'

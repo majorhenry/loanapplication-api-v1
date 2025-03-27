@@ -31,6 +31,7 @@ app.use(limiter);
 // Parse application/json requests
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Routes
 app.use('/api/loans-applications', loanRoutes);
@@ -45,23 +46,5 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
-const startServer = async () => {
-  try {
-    await retry(async () => {
-      const client = await pool.connect();
-      console.log('Connected to the database successfully!');
-      client.release();
-    }, {
-      retries: 5,
-      minTimeout: 2000, // 2 seconds
-    });
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
-    });
-  } catch (error){
-    console.error('Error connecting to the database', error);
-    process.exit(1); // exit the process if the connection fails after retries
-  }
-}   
+
 module.exports = app;
-startServer();

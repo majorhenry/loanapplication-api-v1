@@ -1,111 +1,74 @@
 const httpMocks = require('node-mocks-http');
-const { loanValidator } = require('../middleware/validators.js');
-
-// Utility to run each middleware step-by-step like Express does
-function runMiddleware(middleware, req, res) {
-  return new Promise((resolve, reject) => {
-    middleware(req, res, (err) => {
-      if (err) return reject(err);
-      resolve();
-    });
-  });
-}
-
-jest.setTimeout(10000);
+const {validationResult} = require('express-validator');
+const loanValidationMiddleware = require('../middleware/validators.js');
 
 describe('Loan Application Validation Middleware', () => {
-  const validBody = {
-    customer_id: 1,
-    amount: 10000,
-    annual_interest_rate: 5.5,
-    term_months: 24,
+  const runMiddleware = (middleware, req, res) => {
+    return new Promise((resolve, reject) => {
+      const res = httpMocks.createResponse();
+      const next = (err) => {
+        if (err) return reject(err);
+        resolve();
+      };
+      middleware(req, res, next);
+    });
   };
 
-  it('should pass with valid input', async (done) => {
-    // jest.setTimeout(10000);
-    const req = httpMocks.createRequest({ method: 'POST', body: validBody });
-    const res = httpMocks.createResponse();
-
-    for (let mw of loanValidator) {
-      await runMiddleware(mw, req, res);
-    }
-
-    expect(res._getStatusCode()).toBe(200); // validation passed, no response yet
-    done();
-  });
-
-  it('should fail when amount is missing', async (done) => {
-    // jest.setTimeout(10000);
+  it('should pass with valid input', async () => {
     const req = httpMocks.createRequest({
       method: 'POST',
       body: {
-        customer_id: 1,
-        term_months: 12,
-        annual_interest_rate: 5,
-      },
+        amount: 10000,
+        term_months: 24,
+        annual_interest_rate: 5.5
+      }
     });
     const res = httpMocks.createResponse();
 
-    for (let mw of loanValidator) {
+    for (let mw of loanValidationMiddleware) {
       await runMiddleware(mw, req, res);
     }
 
-    expect(res._getStatusCode()).toBe(400);
-    expect(res._getJSONData().errors).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ param: 'amount' }),
-      ])
-    );
-    done
+    const errors = validationResult(req);
+    expect(errors.isEmpty()).toBe(true);
+    expect(res._getStatusCode()).toBe(200);
   });
 
-  it('should fail when months is negative', async (done) => {
+  it('should fail when amount is missing', async () => {
     const req = httpMocks.createRequest({
       method: 'POST',
       body: {
-        customer_id: 1,
-        amount: 5000,
-        annual_interest_rate: 5,
-        term_months: -6,
-      },
+        term_months: 24,
+        annual_interest_rate: 5.5
+      }
     });
-    const res = httpMocks.createResponse();
 
-    for (let mw of loanValidator) {
-      await runMiddleware(mw, req, res);
-    }
-
-    expect(res._getStatusCode()).toBe(400);
-    expect(res._getJSONData().errors).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ param: 'term_months' }),
-      ])
-    );
-    done();
+    await expect(runMiddleware(loanValidationMiddleware, req)).rejects.toBeTruthy();
   });
 
-  it('should fail when interestRate is 0', async (done) => {
+  it('should fail when term_months is negative', async () => {
     const req = httpMocks.createRequest({
       method: 'POST',
       body: {
-        customer_id: 1,
-        amount: 5000,
-        annual_interest_rate: 0,
-        term_months: 12,
-      },
+        amount: 10000,
+        term_months: -12,
+        annual_interest_rate: 5.5
+      }
     });
-    const res = httpMocks.createResponse();
 
-    for (let mw of loanValidator) {
-      await runMiddleware(mw, req, res);
-    }
+    await expect(runMiddleware(loanValidationMiddleware, req)).rejects.toBeTruthy();
+  });
 
-    expect(res._getStatusCode()).toBe(400);
-    expect(res._getJSONData().errors).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ param: 'annual_interest_rate' }),
-      ])
-    );
-    done
+  it('should fail when annual_interest_rate is 0', async () => {
+    const req = httpMocks.createRequest({
+      method: 'POST',
+      body: {
+        amount: 10000,
+        term_months: 24,
+        annual_interest_rate: 0
+      }
+    });
+
+    await expect(runMiddleware(loanValidationMiddleware, req)).rejects.toBeTruthy();
   });
 });

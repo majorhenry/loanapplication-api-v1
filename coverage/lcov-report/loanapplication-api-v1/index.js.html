@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84.61% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>33/39</span>
+                <span class='fraction'>29/29</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84.61% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>33/39</span>
+                <span class='fraction'>29/29</span>
             </div>
         
             
@@ -163,6 +163,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -177,25 +178,24 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const express = require('express');
 const bodyParser = require('body-parser');
@@ -230,6 +230,7 @@ app.use(limiter);
 // Parse application/json requests
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 &nbsp;
 // Routes
 app.use('/api/loans-applications', loanRoutes);
@@ -244,26 +245,25 @@ app.get('/health', (req, res) =&gt; {
   res.status(200).json({ status: 'ok' });
 });
 &nbsp;
-const startServer = async () =&gt; {
-  try {
-    await retry(async () =&gt; {
-      const client = await pool.connect();
-<span class="cstat-no" title="statement not covered" >      console.log('Connected to the database successfully!');</span>
-<span class="cstat-no" title="statement not covered" >      client.release();</span>
-    }, {
-      retries: 5,
-      minTimeout: 2000, // 2 seconds
-    });
-<span class="cstat-no" title="statement not covered" >    app.listen(port, <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      console.log(`Server is running on port ${port}`);</span>
-    });
-  } catch (error){
-<span class="cstat-no" title="statement not covered" >    console.error('Error connecting to the database', error);</span>
-<span class="cstat-no" title="statement not covered" >    process.exit(1); </span>// exit the process if the connection fails after retries
-  }
-}   
+// const startServer = async () =&gt; {
+//   try {
+//     await retry(async () =&gt; {
+//       const client = await pool.connect();
+//       console.log('Connected to the database successfully!');
+//       client.release();
+//     }, {
+//       retries: 5,
+//       minTimeout: 2000, // 2 seconds
+//     });
+//   } catch (error){
+//     console.error('Error connecting to the database', error);
+//     process.exit(1); // exit the process if the connection fails after retries
+//   }
+// }   
+// app.listen(port, () =&gt; {
+//   console.log(`Server is running on port ${port}`);
+// });
 module.exports = app;
-startServer();
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -271,7 +271,7 @@ startServer();
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-26T16:06:51.744Z
+                at 2025-03-27T09:12:31.218Z
             </div>
         <script src="../prettify.js"></script>
         <script>

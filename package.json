@@ -16,8 +16,8 @@
     "pg": "^8.14.1"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node startServer.js",
+    "dev": "nodemon startServer.js",
     "test": "jest --coverage"
   },
   "jest": {
